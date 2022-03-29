@@ -97,4 +97,4 @@ class Ensamblador:
 
 
 en = Ensamblador()
-en.procesar("codigoAssembler.asm")
+en.procesar("programaAssembler.asm")
