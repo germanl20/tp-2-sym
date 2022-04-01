@@ -1,4 +1,5 @@
 from instrucciones.instruccion import Instruccion
 
 class Jmp(Instruccion):
-    pass
+    def __init__(self, param1):
+        pass
