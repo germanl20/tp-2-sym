@@ -147,7 +147,7 @@ class Ensamblador:
         #Imprimo el diccionario lookupTable:
         print("\n", "Diccionario lookupTable:")
         for etiqueta in self.ejecutable.lookupTable:
-            print(etiqueta, self.ejecutable.lookupTable[etiqueta])
+            print("Etiqueta:", etiqueta, "- Posicion:", self.ejecutable.lookupTable[etiqueta])
                 
 
 
