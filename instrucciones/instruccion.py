@@ -1,2 +1,3 @@
 class Instruccion:
-    pass
+    def procesar(procesador):
+        pass

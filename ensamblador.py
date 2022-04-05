@@ -18,21 +18,24 @@ class Ensamblador:
     
     
     def procesar(self, nombreArchivo):
-        archivo = open(nombreArchivo)
-        numeroDeLinea = 0
+        try:
+            archivo = open(nombreArchivo)
+            numeroDeLinea = 0
 
-        for linea in archivo:
-            numeroDeLinea += 1
-            #Paso la linea a minuscula
-            linea = linea.lower()
+            for linea in archivo:
+                numeroDeLinea += 1
+                #Paso la linea a minuscula
+                linea = linea.lower()
+                
+                self.__procesarLineaArchivo(linea, numeroDeLinea)
+
+            if(len(self.listaErrores) > 0):
+                self.__mostrarErrores()
             
-            self.__procesarLineaArchivo(linea, numeroDeLinea)
-
-        if(len(self.listaErrores) > 0):
-           self.__mostrarErrores()
-        
-        else:
-            self.__mostrarEjecutableGenerado()
+            else:
+                self.__mostrarEjecutableGenerado()
+        except Exception:
+            print("Error: archivo no valido o inexistente")
 
 
     def __procesarLineaArchivo(self, linea, numeroDeLinea):
@@ -142,8 +145,12 @@ class Ensamblador:
         #Imprimo por consola lo que generamos:
         print("\n", "Instrucciones generadas:")
         for instruccion in self.ejecutable.listaInstrucciones:
-            print(instruccion)
-
+            if(isinstance(instruccion, Mov) or isinstance(instruccion, Add) or isinstance(instruccion, Cmp)):
+                print(instruccion.nombre, "- con los parametros", "'" + instruccion.param1 + "' y", "'" + instruccion.param2 + "'")
+            
+            elif(isinstance(instruccion, Dec) or isinstance(instruccion, Inc) or isinstance(instruccion, Jmp) or isinstance(instruccion, Jnz)):
+                print(instruccion.nombre, "- con el parametro", "'" + instruccion.param1 + "'")
+            
         #Imprimo el diccionario lookupTable:
         print("\n", "Diccionario lookupTable:")
         for etiqueta in self.ejecutable.lookupTable:
