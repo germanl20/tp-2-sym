@@ -1,3 +1,3 @@
 class Instruccion:
-    def procesar(procesador):
+    def procesar(self, procesador):
         pass

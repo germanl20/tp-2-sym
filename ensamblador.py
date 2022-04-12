@@ -15,12 +15,22 @@ class Ensamblador:
     def __init__(self):
         self.ejecutable = Ejecutable()
         self.listaErrores = dict()
-    
-    
+
     def procesar(self, nombreArchivo):
+        numeroDeLinea = 0
+
+        numeroDeLinea = self.procesarArchivo(nombreArchivo, numeroDeLinea)
+
+        if(len(self.listaErrores) > 0):
+            self.__mostrarErrores()
+
+        else:
+            self.__mostrarEjecutableGenerado()
+    
+    
+    def procesarArchivo(self, nombreArchivo, numeroDeLinea):
         try:
             archivo = open(nombreArchivo)
-            numeroDeLinea = 0
 
             for linea in archivo:
                 numeroDeLinea += 1
@@ -29,13 +39,11 @@ class Ensamblador:
                 
                 self.__procesarLineaArchivo(linea, numeroDeLinea)
 
-            if(len(self.listaErrores) > 0):
-                self.__mostrarErrores()
-            
-            else:
-                self.__mostrarEjecutableGenerado()
         except Exception:
             print("Error: archivo no valido o inexistente")
+
+        # Lo devuelvo para mantener el numero de linea para la parte recursiva
+        return numeroDeLinea
 
 
     def __procesarLineaArchivo(self, linea, numeroDeLinea):
@@ -77,7 +85,6 @@ class Ensamblador:
             #Si es una instruccion que lleve dos parametros
             if(instruccion == 'mov' or instruccion == 'add' or instruccion == 'cmp'):
                 #Obtengo los parametros
-                #match = re.search('^(\w+)\s*,\s*(\w+)\s*$', parametros)
                 match = re.search('^(ax|bx|cx|dx)\s*,\s*(ax|bx|cx|dx|\d+)\s*$', parametros)
                 if (match):
                     if(instruccion == 'mov'):
