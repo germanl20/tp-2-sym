@@ -25,6 +25,8 @@ class Procesador:
                 self.cx = valor
             case "dx": 
                 self.dx = valor
+            case "flag": 
+                self.flag = valor    
 
     def obtenerRegistro(self, registro):
         match registro:
@@ -36,3 +38,5 @@ class Procesador:
                 return self.cx
             case "dx": 
                 return self.dx
+            case "flag": 
+                return self.flag    

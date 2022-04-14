@@ -5,3 +5,4 @@ class Ejecutable:
         self.listaInstrucciones = list()
         self.listaInstruccionesCodFuente = list()
         self.lookupTable = dict()
+        self.pila = list()
