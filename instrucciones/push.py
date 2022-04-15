@@ -5,8 +5,10 @@ class Push(Instruccion):
         self.nombre = 'Push'
         self.param1 = param1
 
-    def procesar(self, param1):
-        if (self.param1 in ["ax", "bx", "cx", "dx"] ):
-            self.ejecutable.getPila().append(self.obtenerRegistro(param1))
-        else:
-            self.ejecutable.pila().append(int(param1))
+    def procesar(self, procesador):
+        valueParam1 = self.param1
+
+        if (self.param1 in ["ax", "bx", "cx", "dx"]):
+            valueParam1 = procesador.obtenerRegistro(self.param1)
+        
+        procesador.proceso.pila.insert(0, valueParam1)

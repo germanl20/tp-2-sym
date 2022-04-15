@@ -5,6 +5,7 @@ class Pop(Instruccion):
         self.nombre = 'Pop'
         self.param1 = param1
 
-    def procesar(self):
-        if len((self.ejecutable.pila) != 0):
-            self.ejecutable.pila.pop()
+    def procesar(self, procesador):
+        valor = procesador.proceso.pila[0]
+        procesador.setearRegistro(self.param1, int(valor))
+        procesador.proceso.pila.pop(0)

@@ -6,6 +6,5 @@ class Inc(Instruccion):
         self.param1 = param1
 
     def procesar(self, procesador):
-        if(self.param1 in ["ax", "bx", "cx", "dx"]):
-                valuepParam1 = procesador.obtenerRegistro(self.param1)
-                procesador.setearRegistro(valuepParam1 + 1)
+        valueParam1 = procesador.obtenerRegistro(self.param1)
+        procesador.setearRegistro(self.param1, valueParam1 + 1)
