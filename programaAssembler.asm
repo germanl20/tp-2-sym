@@ -1,7 +1,12 @@
+Include "programaAssemblerInclude.asm"
+
 Entry_point:
-	Mov Ax, 0
+	Mov ax, 0
 	Mov cx, 1
+
 Ciclo:
-	Include "programaAssemblerInclude.asm"
+    Push ax
+    Push cx
+    Call Sumar
 	Cmp cx, 10
 	Jnz Ciclo

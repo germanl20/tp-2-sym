@@ -45,10 +45,12 @@ class Ensamblador:
             archivo = open(nombreArchivo)
 
             for linea in archivo:
-                numeroDeLinea += 1
-                numeroLineaListaInstrucciones += 1
+                #Me salteo las lineas vacias
+                if(linea.strip() != ""):
+                    numeroDeLinea += 1
+                    numeroLineaListaInstrucciones += 1
                 
-                numeroLineaListaInstrucciones = self.__procesarLineaArchivo(linea, numeroDeLinea, nombreArchivo, numeroLineaListaInstrucciones)
+                    numeroLineaListaInstrucciones = self.__procesarLineaArchivo(linea, numeroDeLinea, nombreArchivo, numeroLineaListaInstrucciones)
 
         except Exception:
             self.listaErrores[nombreArchivo][numeroDeLinea] = "Archivo: " + nombreArchivo + " no valido o inexistente"
