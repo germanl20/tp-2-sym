@@ -21,17 +21,17 @@ class Ensamblador:
     def __init__(self):
         self.ejecutable = Ejecutable()
         self.listaErrores = dict()
+        self.hayErrores = False
 
     def procesar(self, nombreArchivo):
-        hayErrores = False
         numeroLineaListaInstrucciones = -1
         self.procesarArchivo(nombreArchivo, numeroLineaListaInstrucciones)
 
         for archivoConErrores in self.listaErrores:
             if(len(self.listaErrores[archivoConErrores]) > 0):
-                hayErrores = True
+                self.hayErrores = True
         
-        if(hayErrores):
+        if(self.hayErrores):
             self.__mostrarErrores()
         else:
             self.__mostrarEjecutableGenerado()
@@ -222,10 +222,11 @@ def main():
     archivo = input("Ingrese la ruta del archivo a ensamblar: ")
     ensamblador.procesar(archivo)
     
-    #Ejecucion de la aplicacion
-    proceso = Proceso(ensamblador.ejecutable)
-    procesador = Procesador()
-    procesador.ejecutar(proceso)
+    if(not ensamblador.hayErrores):
+        #Ejecucion de la aplicacion
+        proceso = Proceso(ensamblador.ejecutable)
+        procesador = Procesador()
+        procesador.ejecutar(proceso)
 
 
 main()

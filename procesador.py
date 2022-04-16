@@ -24,6 +24,7 @@ class Procesador:
             if(not isinstance(instruccion, Ret)):
                 self.ip = self.ip + 1
         
+        print("\n\n", "Ejecucion del programa - Los registros terminaron con los valores:")
         print("ax", self.ax)
         print("bx", self.bx)
         print("cx", self.cx)
