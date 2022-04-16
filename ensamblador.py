@@ -21,65 +21,79 @@ class Ensamblador:
         self.listaErrores = dict()
 
     def procesar(self, nombreArchivo):
-        numeroDeLinea = 0
+        hayErrores = False
+        numeroLineaListaInstrucciones = -1
+        self.procesarArchivo(nombreArchivo, numeroLineaListaInstrucciones)
 
-        numeroDeLinea = self.procesarArchivo(nombreArchivo, numeroDeLinea)
-
-        if(len(self.listaErrores) > 0):
+        for archivoConErrores in self.listaErrores:
+            if(len(self.listaErrores[archivoConErrores]) > 0):
+                hayErrores = True
+        
+        if(hayErrores):
             self.__mostrarErrores()
-
         else:
             self.__mostrarEjecutableGenerado()
     
     
-    def procesarArchivo(self, nombreArchivo, numeroDeLinea):
+    def procesarArchivo(self, nombreArchivo, numeroLineaListaInstrucciones):
+        numeroDeLinea = 0
+        self.listaErrores[nombreArchivo] = dict()
+
         try:
             archivo = open(nombreArchivo)
 
             for linea in archivo:
                 numeroDeLinea += 1
-                #Paso la linea a minuscula
-                linea = linea.lower()
+                numeroLineaListaInstrucciones += 1
                 
-                self.__procesarLineaArchivo(linea, numeroDeLinea)
+                numeroLineaListaInstrucciones = self.__procesarLineaArchivo(linea, numeroDeLinea, nombreArchivo, numeroLineaListaInstrucciones)
 
         except Exception:
-            print("Error: archivo no valido o inexistente")
+            self.listaErrores[nombreArchivo][numeroDeLinea] = "Archivo: " + nombreArchivo + " no valido o inexistente"
+        
+        return numeroLineaListaInstrucciones
 
-        # Lo devuelvo para mantener el numero de linea para la parte recursiva
-        return numeroDeLinea
 
+    def __procesarLineaArchivo(self, linea, numeroDeLinea, nombreArchivo, numeroLineaListaInstrucciones):
+        matchInclude = re.search('^\s*include\s+"(.+)"\s*$', linea, re.IGNORECASE)
+        #Paso la linea a minuscula
+        linea = linea.lower()
+        matchEtiqueta = re.search('^\s*([\w_]+):\s*$', linea)
 
-    def __procesarLineaArchivo(self, linea, numeroDeLinea):
-        match = re.search('^\s*([\w_]+):\s*$', linea)
         #Si es una etiqueta
-        if(match):
-            etiqueta = match.group(1)
+        if(matchEtiqueta):
+            etiqueta = matchEtiqueta.group(1)
             
             if(etiqueta == 'entry_point'):
                 if(self.ejecutable.entryPoint == ""):
-                    self.ejecutable.entryPoint = numeroDeLinea
+                    self.ejecutable.entryPoint = numeroLineaListaInstrucciones
                     self.ejecutable.listaInstrucciones.append(Etiqueta())
                     self.ejecutable.listaInstruccionesCodFuente.append(linea)
                 
                 #Si entryPoint no es vacio quiere decir que hay mas de uno en el codigo fuente
                 else:
-                    self.listaErrores[numeroDeLinea] = "Error en la linea " + str(numeroDeLinea) + ": No puede haber mas de un entry_point"
+                    self.listaErrores[nombreArchivo][numeroDeLinea] = "Error en la linea " + str(numeroDeLinea) + ": No puede haber mas de un entry_point"
 
             else:
                 if(etiqueta not in self.ejecutable.lookupTable):
-                    self.ejecutable.lookupTable[etiqueta] = numeroDeLinea
+                    self.ejecutable.lookupTable[etiqueta] = numeroLineaListaInstrucciones
                     self.ejecutable.listaInstrucciones.append(Etiqueta())
                     self.ejecutable.listaInstruccionesCodFuente.append(linea)
                 else:
-                    self.listaErrores[numeroDeLinea] = "Error en la linea " + str(numeroDeLinea) + ": Etiqueta duplicada"
+                    self.listaErrores[nombreArchivo][numeroDeLinea] = "Error en la linea " + str(numeroDeLinea) + ": Etiqueta duplicada"
         
+        elif(matchInclude):
+            archivo = matchInclude.group(1)
+            numeroLineaListaInstrucciones = self.procesarArchivo(archivo, numeroLineaListaInstrucciones - 1)
+
         #Sino tendria que ser una instruccion
         else:
-            self.__procesarInstruccion(linea, numeroDeLinea)
+            self.__procesarInstruccion(linea, numeroDeLinea, nombreArchivo)
+        
+        return numeroLineaListaInstrucciones
 
     
-    def __procesarInstruccion(self, linea, numeroDeLinea):
+    def __procesarInstruccion(self, linea, numeroDeLinea, nombreArchivo):
         if(re.search('^\s*(ret)\s*$', linea)):
             instruccionNueva = Ret()
             self.ejecutable.listaInstrucciones.append(instruccionNueva)
@@ -111,7 +125,7 @@ class Ensamblador:
                     
                     #Si dio error por parametros invalidos
                     else:
-                        self.listaErrores[numeroDeLinea] = "Error en la linea " + str(numeroDeLinea) + ": Parametros no validos"
+                        self.listaErrores[nombreArchivo][numeroDeLinea] = "Error en la linea " + str(numeroDeLinea) + ": Parametros no validos"
                 
                 elif(instruccion == 'jmp' or instruccion == 'jnz'  or instruccion == 'call'):
                     #Obtengo los parametros
@@ -130,7 +144,7 @@ class Ensamblador:
                         self.ejecutable.listaInstruccionesCodFuente.append(linea)
                     
                     else:
-                        self.listaErrores[numeroDeLinea] = "Error en la linea " + str(numeroDeLinea) + ": Parametro no valido - Debe ser una sola palabra que represente el nombre de una etiqueta"
+                        self.listaErrores[nombreArchivo][numeroDeLinea] = "Error en la linea " + str(numeroDeLinea) + ": Parametro no valido - Debe ser una sola palabra que represente el nombre de una etiqueta"
             
                 elif(instruccion == 'push'):
                     #Obtengo los parametros
@@ -142,7 +156,7 @@ class Ensamblador:
                         self.ejecutable.listaInstruccionesCodFuente.append(linea)
                     
                     else:
-                        self.listaErrores[numeroDeLinea] = "Error en la linea " + str(numeroDeLinea) + ": Parametro no valido - Debe ser un registro o numero."
+                        self.listaErrores[nombreArchivo][numeroDeLinea] = "Error en la linea " + str(numeroDeLinea) + ": Parametro no valido - Debe ser un registro o numero."
 
                 # Si es Inc, Dec o Pop
                 else:
@@ -162,16 +176,17 @@ class Ensamblador:
                         self.ejecutable.listaInstruccionesCodFuente.append(linea)
                     
                     else:
-                        self.listaErrores[numeroDeLinea] = "Error en la linea " + str(numeroDeLinea) + ": Parametro no valido - Debe ser 'ax', 'bx', 'cx' o 'dx'"
+                        self.listaErrores[nombreArchivo][numeroDeLinea] = "Error en la linea " + str(numeroDeLinea) + ": Parametro no valido - Debe ser 'ax', 'bx', 'cx' o 'dx'"
             
             #Si dio error por instruccion mal escrita o no valida
             else:
-                self.listaErrores[numeroDeLinea] = "Error en la linea " + str(numeroDeLinea) + ": instruccion no valida"
+                self.listaErrores[nombreArchivo][numeroDeLinea] = "Error en la linea " + str(numeroDeLinea) + ": instruccion no valida"
 
     
     def __mostrarErrores(self):
-        for error in self.listaErrores:
-            print(self.listaErrores[error])
+        for archivo in self.listaErrores:
+            for error in self.listaErrores[archivo]:
+                print("Error en archivo:", archivo, "-", self.listaErrores[archivo][error])
 
 
     def __mostrarEjecutableGenerado(self):
@@ -200,6 +215,10 @@ class Ensamblador:
                 
 
 
-en = Ensamblador()
-archivo = input("Ingrese la ruta del archivo a ensamblar: ")
-en.procesar(archivo)
+def main():
+    ensamblador = Ensamblador()
+    archivo = input("Ingrese la ruta del archivo a ensamblar: ")
+    ensamblador.procesar(archivo)
+
+
+main()
