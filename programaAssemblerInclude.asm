@@ -1,2 +1,2 @@
 Add ax, cx
-Inc ax
+Inc cx

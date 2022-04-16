@@ -13,7 +13,7 @@ class Cmp(Instruccion):
         if(self.param2 in ["ax", "bx", "cx", "dx"]):
             valueParam2 = procesador.obtenerRegistro(self.param2)
 
-        if (valueParam1 == valueParam2):
-            procesador.setearRegistro(self.flag, 0)
+        if (valueParam1 == int(valueParam2)):
+            procesador.flag = 0
         else:
-            procesador.setearRegistro(self.flag, 1)
+            procesador.flag = 1

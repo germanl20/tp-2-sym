@@ -6,6 +6,6 @@ class Jnz(Instruccion):
         self.param1 = param1
 
     def procesar(self, procesador):
-        if procesador.obtenerRegistro(self.flag) == 1:
+        if procesador.flag == 1:
             posicion = procesador.proceso.ejecutable.lookupTable[self.param1]
             procesador.ip = posicion

@@ -13,6 +13,8 @@ from instrucciones.mov import Mov
 from instrucciones.pop import Pop
 from instrucciones.push import Push
 from instrucciones.ret import Ret
+from procesador import Procesador
+from proceso import Proceso
 
 class Ensamblador:
 
@@ -219,6 +221,11 @@ def main():
     ensamblador = Ensamblador()
     archivo = input("Ingrese la ruta del archivo a ensamblar: ")
     ensamblador.procesar(archivo)
+    
+    #Ejecucion de la aplicacion
+    proceso = Proceso(ensamblador.ejecutable)
+    procesador = Procesador()
+    procesador.ejecutar(proceso)
 
 
 main()
