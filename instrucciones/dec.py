@@ -7,4 +7,4 @@ class Dec(Instruccion):
 
     def procesar(self, procesador):
         valueParam1 = procesador.obtenerRegistro(self.param1)
-        procesador.setearRegistro(self.param1, valueParam1 - 1)
+        procesador.setearRegistro(self.param1, int(valueParam1) - 1)

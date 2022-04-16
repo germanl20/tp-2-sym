@@ -90,12 +90,12 @@ class Ensamblador:
 
         #Sino tendria que ser una instruccion
         else:
-            self.__procesarInstruccion(linea, numeroDeLinea, nombreArchivo)
+            self.__procesarInstruccion(linea, numeroDeLinea, nombreArchivo, numeroLineaListaInstrucciones)
         
         return numeroLineaListaInstrucciones
 
     
-    def __procesarInstruccion(self, linea, numeroDeLinea, nombreArchivo):
+    def __procesarInstruccion(self, linea, numeroDeLinea, nombreArchivo, numeroLineaListaInstrucciones):
         if(re.search('^\s*(ret)\s*$', linea)):
             instruccionNueva = Ret()
             self.ejecutable.listaInstrucciones.append(instruccionNueva)
@@ -140,7 +140,7 @@ class Ensamblador:
                             instruccionNueva = Jnz(match.group(1))
                         
                         elif(instruccion == 'call'):
-                            instruccionNueva = Call(match.group(1), int(numeroDeLinea) + 1)
+                            instruccionNueva = Call(match.group(1), int(numeroLineaListaInstrucciones) + 1)
                         
                         self.ejecutable.listaInstrucciones.append(instruccionNueva)
                         self.ejecutable.listaInstruccionesCodFuente.append(linea)
