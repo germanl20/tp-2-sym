@@ -7,6 +7,8 @@ class Cmp(Instruccion):
         self.param2 = param2
 
     def procesar(self, procesador):
+        procesoCorrectamente = True
+
         valueParam1 = procesador.obtenerRegistro(self.param1)
         valueParam2 = self.param2
 
@@ -17,3 +19,5 @@ class Cmp(Instruccion):
             procesador.flag = 0
         else:
             procesador.flag = 1
+
+        return procesoCorrectamente

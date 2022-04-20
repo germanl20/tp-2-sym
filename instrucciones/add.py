@@ -7,6 +7,8 @@ class Add(Instruccion):
         self.param2 = param2
 
     def procesar(self, procesador):
+        procesoCorrectamente = True
+
         valueParam1 = procesador.obtenerRegistro(self.param1)
         
         if(self.param2 in ["ax", "bx", "cx", "dx"]):
@@ -16,3 +18,5 @@ class Add(Instruccion):
             suma = valueParam1 + int(self.param2)
 
         procesador.setearRegistro(self.param1, suma)
+
+        return procesoCorrectamente

@@ -13,23 +13,27 @@ class Procesador:
 
     def ejecutar(self, proceso):
         self.proceso = proceso
+        procesoCorrectamente = True
         self.ip = self.proceso.ejecutable.entryPoint
         instrucciones = self.proceso.ejecutable.listaInstrucciones
 
-        while self.ip < len(instrucciones):
+        print("\n\n", "*** Ejecucion del programa ***")
+
+        while (self.ip < len(instrucciones) and procesoCorrectamente):
             instruccion = instrucciones[self.ip]
-            instruccion.procesar(self)
+            procesoCorrectamente = instruccion.procesar(self)
 
             #Cuando es Ret no se incrementa porque Ret ya modifica el ip y no va a una etiqueta
             if(not isinstance(instruccion, Ret)):
                 self.ip = self.ip + 1
         
-        print("\n\n", "Ejecucion del programa - Los registros terminaron con los valores:")
-        print("ax", self.ax)
-        print("bx", self.bx)
-        print("cx", self.cx)
-        print("dx", self.dx)
-        print("flag", self.flag)
+        if(procesoCorrectamente):
+            print("Los registros terminaron con los valores:")
+            print("ax", self.ax)
+            print("bx", self.bx)
+            print("cx", self.cx)
+            print("dx", self.dx)
+            print("flag", self.flag)
 
 
     def setearRegistro(self, registro, valor):

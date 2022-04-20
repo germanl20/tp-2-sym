@@ -6,6 +6,10 @@ class Pop(Instruccion):
         self.param1 = param1
 
     def procesar(self, procesador):
+        procesoCorrectamente = True
+
         valor = procesador.proceso.pila[0]
         procesador.setearRegistro(self.param1, int(valor))
         procesador.proceso.pila.pop(0)
+
+        return procesoCorrectamente

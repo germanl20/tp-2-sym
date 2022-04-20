@@ -6,5 +6,9 @@ class Inc(Instruccion):
         self.param1 = param1
 
     def procesar(self, procesador):
+        procesoCorrectamente = True
+
         valueParam1 = procesador.obtenerRegistro(self.param1)
         procesador.setearRegistro(self.param1, int(valueParam1) + 1)
+
+        return procesoCorrectamente

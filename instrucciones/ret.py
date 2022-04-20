@@ -5,6 +5,10 @@ class Ret(Instruccion):
         self.nombre = 'Ret'
 
     def procesar(self, procesador):
+        procesoCorrectamente = True
+
         valor = procesador.proceso.pila[0]
         procesador.ip = valor
         procesador.proceso.pila.pop(0)
+
+        return procesoCorrectamente
