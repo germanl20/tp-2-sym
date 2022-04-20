@@ -31,8 +31,15 @@ class Ensamblador:
             if(len(self.listaErrores[archivoConErrores]) > 0):
                 self.hayErrores = True
         
-        if(self.hayErrores):
+        hayEntryPoint = self.ejecutable.entryPoint != ""
+
+        if(not hayEntryPoint):
+            self.hayErrores = True
+            print("Error: El programa no posee Entry_point")
+
+        elif(self.hayErrores):
             self.__mostrarErrores()
+        
         else:
             self.__mostrarEjecutableGenerado()
     
