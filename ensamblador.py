@@ -13,8 +13,6 @@ from instrucciones.mov import Mov
 from instrucciones.pop import Pop
 from instrucciones.push import Push
 from instrucciones.ret import Ret
-from procesador import Procesador
-from proceso import Proceso
 
 class Ensamblador:
 
@@ -24,6 +22,7 @@ class Ensamblador:
         self.hayErrores = False
 
     def procesar(self, nombreArchivo):
+        self.inicializar()
         numeroLineaListaInstrucciones = -1
         self.procesarArchivo(nombreArchivo, numeroLineaListaInstrucciones)
 
@@ -40,9 +39,15 @@ class Ensamblador:
         elif(self.hayErrores):
             self.__mostrarErrores()
         
-        else:
-            self.__mostrarEjecutableGenerado()
+        # else:
+        #     self.__mostrarEjecutableGenerado()
+        
+        return self.ejecutable
     
+    def inicializar(self):
+        self.ejecutable = Ejecutable()
+        self.listaErrores = dict()
+        self.hayErrores = False
     
     def procesarArchivo(self, nombreArchivo, numeroLineaListaInstrucciones):
         numeroDeLinea = 0
@@ -223,19 +228,3 @@ class Ensamblador:
         print("\n", "Diccionario lookupTable:")
         for etiqueta in self.ejecutable.lookupTable:
             print("Etiqueta:", etiqueta, "- Posicion:", self.ejecutable.lookupTable[etiqueta])
-                
-
-
-def main():
-    ensamblador = Ensamblador()
-    archivo = input("Ingrese la ruta del archivo a ensamblar: ")
-    ensamblador.procesar(archivo)
-    
-    if(not ensamblador.hayErrores):
-        #Ejecucion de la aplicacion
-        proceso = Proceso(ensamblador.ejecutable)
-        procesador = Procesador()
-        procesador.ejecutar(proceso)
-
-
-main()

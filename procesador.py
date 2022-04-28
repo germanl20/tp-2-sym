@@ -1,5 +1,6 @@
+from contexto import Contexto
 from instrucciones.ret import Ret
-
+from enum import Enum
 
 class Procesador:
     def __init__(self):
@@ -9,23 +10,27 @@ class Procesador:
         self.dx = 0
         self.ip = 0
         self.flag = 0
+        self.estado = ProcesadorEstado.ACTIVO
 
 
-    def ejecutar(self, proceso):
-        self.proceso = proceso
+    def ejecutar(self):
         procesoCorrectamente = True
-        self.ip = self.proceso.ejecutable.entryPoint
-        instrucciones = self.proceso.ejecutable.listaInstrucciones
 
         print("\n\n", "*** Ejecucion del programa ***")
 
-        while (self.ip < len(instrucciones) and procesoCorrectamente):
-            instruccion = instrucciones[self.ip]
+        while (self.ip < len(self.proceso.ejecutable.listaInstrucciones) and procesoCorrectamente):
+            instruccion = self.proceso.ejecutable.listaInstrucciones[self.ip]
             procesoCorrectamente = instruccion.procesar(self)
 
             #Cuando es Ret no se incrementa porque Ret ya modifica el ip y no va a una etiqueta
             if(not isinstance(instruccion, Ret)):
                 self.ip = self.ip + 1
+            
+            #Llamamos al sistema operativo para evaluar si hay que pasar a otro proceso
+            self.clockHandler()
+
+            #Visualizamos los registros
+            #self.visualizador.mostrar()
         
         if(procesoCorrectamente):
             print("Los registros terminaron con los valores:")
@@ -49,6 +54,7 @@ class Procesador:
             case "flag": 
                 self.flag = valor    
 
+
     def obtenerRegistro(self, registro):
         match registro:
             case "ax": 
@@ -60,4 +66,40 @@ class Procesador:
             case "dx": 
                 return self.dx
             case "flag": 
-                return self.flag    
+                return self.flag
+
+
+    def setearSistema(self, sistema):
+        self.sistema = sistema
+
+    def setearProceso(self, proceso):
+        self.proceso = proceso
+        self.setearContexto(proceso.contexto)
+    
+    def setearContexto(self, contexto):
+        self.ax = contexto.ax
+        self.bx = contexto.bx
+        self.cx = contexto.cx
+        self.dx = contexto.dx
+        self.ip = contexto.ip
+        self.flag = contexto.flag
+
+    def obtenerContexto(self):
+        contexto = Contexto()
+        contexto.ax = self.ax
+        contexto.bx = self.bx
+        contexto.cx = self.cx
+        contexto.dx = self.dx
+        contexto.ip = self.ip
+        contexto.flag = self.flag
+
+        return contexto
+
+
+    def clockHandler(self):
+        self.sistema.clockHandler()
+
+
+class ProcesadorEstado(Enum):
+    ACTIVO = 0,
+    INACTIVO = 1
