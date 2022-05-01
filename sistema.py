@@ -33,12 +33,16 @@ def main():
         sistema.ejecutar()
         
         for proceso in sistema.listaProcesos:
-            print("AX:", proceso.contexto.ax)
-            print("BX:", proceso.contexto.bx)
-            print("CX:", proceso.contexto.cx)
-            print("DX:", proceso.contexto.dx)
-            print("IP:", proceso.contexto.ip)
-            print("FLAG:", proceso.contexto.flag)
+            if(proceso.error == ""):
+                print("AX:", proceso.contexto.ax)
+                print("BX:", proceso.contexto.bx)
+                print("CX:", proceso.contexto.cx)
+                print("DX:", proceso.contexto.dx)
+                print("IP:", proceso.contexto.ip)
+                print("FLAG:", proceso.contexto.flag)
+                
+            else:
+                print("ERROR:", proceso.error)
             print("----------------", end='\n\n')
 
 class Sistema:
@@ -55,6 +59,7 @@ class Sistema:
             self.listaProcesos.append(proceso)
 
         self.procesador.setearSistema(self)
+        self.listaProcesos[self.procesoActivo].estado = ProcesoEstado.EJECUTANDO
         self.procesador.setearProceso(self.listaProcesos[self.procesoActivo])
     
     def ejecutar(self):
@@ -91,8 +96,8 @@ class Sistema:
         if(self.hayProcesosBloqueados()):
             seguirBuscando = True
             while(seguirBuscando):
-                if(len(self.listaProcesos) > (self.procesoActivo + 1)):
-                    procesoActivo += 1
+                procesoActivo += 1
+                if(len(self.listaProcesos) > procesoActivo):
                     if(self.listaProcesos[procesoActivo].estado == ProcesoEstado.BLOQUEADO):
                         seguirBuscando = False
                 else:

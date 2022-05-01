@@ -24,10 +24,7 @@ class Procesador:
                 instruccion = self.proceso.ejecutable.listaInstrucciones[self.ip]
                 procesoCorrectamente = instruccion.procesar(self)
 
-                if(not procesoCorrectamente):
-                    self.proceso.estado = ProcesoEstado.FINALIZADO
-                    self.sistema.cambiarProceso()
-                else:
+                if(procesoCorrectamente):
                     #Cuando es Ret no se incrementa porque Ret ya modifica el ip y no va a una etiqueta
                     if(not isinstance(instruccion, Ret)):
                         self.ip = self.ip + 1
