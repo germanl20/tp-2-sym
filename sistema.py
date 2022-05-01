@@ -34,6 +34,12 @@ def main():
         
         for proceso in sistema.listaProcesos:
             print("AX:", proceso.contexto.ax)
+            print("BX:", proceso.contexto.bx)
+            print("CX:", proceso.contexto.cx)
+            print("DX:", proceso.contexto.dx)
+            print("IP:", proceso.contexto.ip)
+            print("FLAG:", proceso.contexto.flag)
+            print("----------------", end='\n\n')
 
 class Sistema:
     def __init__(self, ejecutables, procesador):

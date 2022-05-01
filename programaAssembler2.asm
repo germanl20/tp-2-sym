@@ -3,6 +3,6 @@ Entry_point:
 	Mov cx, 1
 Ciclo:
 	Add ax, cx
-	Inc ax
+	Inc cx
 	Cmp cx, 10
 	Jnz Ciclo

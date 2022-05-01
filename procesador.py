@@ -34,21 +34,10 @@ class Procesador:
                     
                     #Llamamos al sistema operativo para evaluar si hay que pasar a otro proceso
                     self.clockHandler()
-
-                    #Visualizamos los registros
-                    #self.visualizador.mostrar()
             
             #Si termino el ejecutable
             self.proceso.estado = ProcesoEstado.FINALIZADO
             self.sistema.cambiarProceso()
-        
-        if(procesoCorrectamente):
-            print("Los registros terminaron con los valores:")
-            print("ax", self.ax)
-            print("bx", self.bx)
-            print("cx", self.cx)
-            print("dx", self.dx)
-            print("flag", self.flag)
 
 
     def setearRegistro(self, registro, valor):
