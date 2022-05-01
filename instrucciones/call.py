@@ -11,7 +11,7 @@ class Call(Instruccion):
 
         procesador.proceso.pila.insert(0, self.posicionSiguiente)
         if(self.param1 not in procesador.proceso.ejecutable.lookupTable):
-            print("Error en instruccion Call: No existe la etiqueta '" + self.param1 + "'")
+            procesador.proceso.error = "Error en instruccion Call: No existe la etiqueta '" + self.param1 + "'"
             procesoCorrectamente = False
         else:
             posicion = procesador.proceso.ejecutable.lookupTable[self.param1]

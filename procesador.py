@@ -2,6 +2,8 @@ from contexto import Contexto
 from instrucciones.ret import Ret
 from enum import Enum
 
+from proceso import ProcesoEstado
+
 class Procesador:
     def __init__(self):
         self.ax = 0
@@ -14,23 +16,31 @@ class Procesador:
 
 
     def ejecutar(self):
-        procesoCorrectamente = True
-
         print("\n\n", "*** Ejecucion del programa ***")
 
-        while (self.ip < len(self.proceso.ejecutable.listaInstrucciones) and procesoCorrectamente):
-            instruccion = self.proceso.ejecutable.listaInstrucciones[self.ip]
-            procesoCorrectamente = instruccion.procesar(self)
+        while(self.estado == ProcesadorEstado.ACTIVO):
+            procesoCorrectamente = True
+            while (self.ip < len(self.proceso.ejecutable.listaInstrucciones) and procesoCorrectamente):
+                instruccion = self.proceso.ejecutable.listaInstrucciones[self.ip]
+                procesoCorrectamente = instruccion.procesar(self)
 
-            #Cuando es Ret no se incrementa porque Ret ya modifica el ip y no va a una etiqueta
-            if(not isinstance(instruccion, Ret)):
-                self.ip = self.ip + 1
+                if(not procesoCorrectamente):
+                    self.proceso.estado = ProcesoEstado.FINALIZADO
+                    self.sistema.cambiarProceso()
+                else:
+                    #Cuando es Ret no se incrementa porque Ret ya modifica el ip y no va a una etiqueta
+                    if(not isinstance(instruccion, Ret)):
+                        self.ip = self.ip + 1
+                    
+                    #Llamamos al sistema operativo para evaluar si hay que pasar a otro proceso
+                    self.clockHandler()
+
+                    #Visualizamos los registros
+                    #self.visualizador.mostrar()
             
-            #Llamamos al sistema operativo para evaluar si hay que pasar a otro proceso
-            self.clockHandler()
-
-            #Visualizamos los registros
-            #self.visualizador.mostrar()
+            #Si termino el ejecutable
+            self.proceso.estado = ProcesoEstado.FINALIZADO
+            self.sistema.cambiarProceso()
         
         if(procesoCorrectamente):
             print("Los registros terminaron con los valores:")

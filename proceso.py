@@ -9,6 +9,7 @@ class Proceso:
         self.pila = list()
         self.estado = ProcesoEstado.BLOQUEADO
         self.contexto = Contexto()
+        self.error = ""
 
     def setearContexto(self, contexto):
         self.contexto = contexto
