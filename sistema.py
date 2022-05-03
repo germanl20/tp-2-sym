@@ -76,7 +76,11 @@ class Sistema:
         self.listaProcesos[self.procesoActivo].pila = self.procesador.proceso.pila
         self.listaProcesos[self.procesoActivo].error = self.procesador.proceso.error
         self.listaProcesos[self.procesoActivo].estado = self.procesador.proceso.estado
-        if(self.listaProcesos[self.procesoActivo].estado == ProcesoEstado.EJECUTANDO):
+
+        if(len(self.listaProcesos[self.procesoActivo].ejecutable.listaInstrucciones) == self.listaProcesos[self.procesoActivo].contexto.ip):
+            self.listaProcesos[self.procesoActivo].estado = ProcesoEstado.FINALIZADO
+            
+        elif(self.listaProcesos[self.procesoActivo].estado == ProcesoEstado.EJECUTANDO):
             self.listaProcesos[self.procesoActivo].estado = ProcesoEstado.BLOQUEADO
         
         self.procesoActivo = self.obtenerProximoProceso()

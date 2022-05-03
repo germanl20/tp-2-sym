@@ -33,7 +33,6 @@ class Procesador:
                     self.clockHandler()
             
             #Si termino el ejecutable
-            self.proceso.estado = ProcesoEstado.FINALIZADO
             self.sistema.cambiarProceso()
 
 
