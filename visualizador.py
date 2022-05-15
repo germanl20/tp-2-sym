@@ -9,14 +9,60 @@ class Visualizador:
     def mostrar(self, ejecutable, procesador):
         try:
             self.pantalla.clear()
+            
+            totalMostrado = 0
 
-            for indice in range(len(ejecutable.listaInstruccionesCodFuente)):
-                #Si es la instruccion ejecutada, muestro con una flecha
-                if(indice == procesador.ip):
-                    self.pantalla.addstr(indice, 0, "->")
-                    self.pantalla.addstr(indice, 3, ejecutable.listaInstruccionesCodFuente[indice].strip())
-                else:
-                    self.pantalla.addstr(indice, 3, ejecutable.listaInstruccionesCodFuente[indice].strip())
+            #Si "ip" vale 0 o 1
+            if(procesador.ip <= 1):
+                for indice in range(len(ejecutable.listaInstruccionesCodFuente)):
+                    #Si es la instruccion ejecutada, muestro con una flecha
+                    if(indice == procesador.ip):
+                        self.pantalla.addstr(indice, 0, "->")
+                        self.pantalla.addstr(indice, 3, ejecutable.listaInstruccionesCodFuente[indice].strip())
+                    else:
+                        self.pantalla.addstr(indice, 3, ejecutable.listaInstruccionesCodFuente[indice].strip())
+                    
+                    totalMostrado += 1
+                    if(totalMostrado == 5):
+                        if(totalMostrado != len(ejecutable.listaInstruccionesCodFuente)):
+                            self.pantalla.addstr(indice + 1, 3, "...")
+                        break
+            
+            #Si estoy en las ultimas 2 posiciones
+            elif(procesador.ip + 1 >= (len(ejecutable.listaInstruccionesCodFuente) - 1)):
+                rango = range(len(ejecutable.listaInstruccionesCodFuente))
+                if(len(rango) > 5):
+                    rango = rango[len(rango) - 5: len(rango)]
+                    self.pantalla.addstr(0, 3, "...")
+                    totalMostrado += 1
+
+                for indice in rango:
+                    #Si es la instruccion ejecutada, muestro con una flecha
+                    if(indice == procesador.ip):
+                        self.pantalla.addstr(totalMostrado, 0, "->")
+                        self.pantalla.addstr(totalMostrado, 3, ejecutable.listaInstruccionesCodFuente[indice].strip())
+                    else:
+                        self.pantalla.addstr(totalMostrado, 3, ejecutable.listaInstruccionesCodFuente[indice].strip())
+                    
+                    totalMostrado += 1
+            
+            #Si esta en el medio de la lista
+            else:
+                indice = 0
+                if(procesador.ip - 2 > 0):
+                    self.pantalla.addstr(indice, 3, "...")
+                    indice += 1
+
+                self.pantalla.addstr(indice, 3, ejecutable.listaInstruccionesCodFuente[procesador.ip - 2].strip())
+                self.pantalla.addstr(indice + 1, 3, ejecutable.listaInstruccionesCodFuente[procesador.ip - 1].strip())
+
+                self.pantalla.addstr(indice + 2, 0, "->")
+                self.pantalla.addstr(indice + 2, 3, ejecutable.listaInstruccionesCodFuente[procesador.ip].strip())
+
+                self.pantalla.addstr(indice + 3, 3, ejecutable.listaInstruccionesCodFuente[procesador.ip + 1].strip())
+                self.pantalla.addstr(indice + 4, 3, ejecutable.listaInstruccionesCodFuente[procesador.ip + 2].strip())
+
+                self.pantalla.addstr(indice + 5, 3, "...")
 
 
             #Mostramos los registros del procesador
@@ -28,6 +74,6 @@ class Visualizador:
             self.pantalla.addstr(5, 25, "flag: " + str(procesador.flag))
             self.pantalla.refresh()
 
-            time.sleep(0.3)
+            time.sleep(0.5)
         except:
             pass
