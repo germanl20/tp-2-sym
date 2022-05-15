@@ -77,3 +77,20 @@ class Visualizador:
             time.sleep(0.5)
         except:
             pass
+
+    def mostrarFin(self, listaProcesos):
+        print("\n\n", "¡Termino la ejecucion!")
+        print("Los procesos terminaron con los siguientes valores: ", end="\n\n")
+
+        for proceso in listaProcesos:
+            if(proceso.error == ""):
+                print("AX:", proceso.contexto.ax)
+                print("BX:", proceso.contexto.bx)
+                print("CX:", proceso.contexto.cx)
+                print("DX:", proceso.contexto.dx)
+                print("IP:", proceso.contexto.ip)
+                print("FLAG:", proceso.contexto.flag)
+                
+            else:
+                print("ERROR:", proceso.error)
+            print("----------------", end='\n\n')

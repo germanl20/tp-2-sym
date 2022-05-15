@@ -32,19 +32,6 @@ def main():
     if(len(ejecutables) > 0 and not huboErrores):
         sistema = Sistema(ejecutables, procesador)
         sistema.ejecutar()
-        
-        for proceso in sistema.listaProcesos:
-            if(proceso.error == ""):
-                print("AX:", proceso.contexto.ax)
-                print("BX:", proceso.contexto.bx)
-                print("CX:", proceso.contexto.cx)
-                print("DX:", proceso.contexto.dx)
-                print("IP:", proceso.contexto.ip)
-                print("FLAG:", proceso.contexto.flag)
-                
-            else:
-                print("ERROR:", proceso.error)
-            print("----------------", end='\n\n')
 
 class Sistema:
     def __init__(self, ejecutables, procesador):
@@ -67,6 +54,7 @@ class Sistema:
     
     def ejecutar(self):
         self.procesador.ejecutar()
+        self.visualizador.mostrarFin(self.listaProcesos)
 
     def clockHandler(self):
         self.contadorInstrucciones += 1

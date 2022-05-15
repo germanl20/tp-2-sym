@@ -16,8 +16,6 @@ class Procesador:
 
 
     def ejecutar(self):
-        print("\n\n", "*** Ejecucion del programa ***")
-
         while(self.estado == ProcesadorEstado.ACTIVO):
             procesoCorrectamente = True
             while (self.ip < len(self.proceso.ejecutable.listaInstrucciones) and procesoCorrectamente):
