@@ -1,6 +1,7 @@
 from ensamblador import Ensamblador
 from procesador import Procesador, ProcesadorEstado
 from proceso import Proceso, ProcesoEstado
+from visualizador import Visualizador
 import os
 
 def main():
@@ -52,6 +53,7 @@ class Sistema:
         self.contadorInstrucciones = 0
         self.INSTRUCCIONESMAXIMAS = 5
         self.procesador = procesador
+        self.visualizador = Visualizador()
 
         for ejecutable in ejecutables:
             proceso = Proceso(ejecutable)
@@ -61,6 +63,7 @@ class Sistema:
         self.procesador.setearSistema(self)
         self.listaProcesos[self.procesoActivo].estado = ProcesoEstado.EJECUTANDO
         self.procesador.setearProceso(self.listaProcesos[self.procesoActivo])
+        self.procesador.setearVisualizador(self.visualizador)
     
     def ejecutar(self):
         self.procesador.ejecutar()
@@ -77,7 +80,11 @@ class Sistema:
         self.listaProcesos[self.procesoActivo].error = self.procesador.proceso.error
         self.listaProcesos[self.procesoActivo].estado = self.procesador.proceso.estado
 
-        if(len(self.listaProcesos[self.procesoActivo].ejecutable.listaInstrucciones) == self.listaProcesos[self.procesoActivo].contexto.ip):
+        #Si hubo error, finalizo el proceso
+        if(self.listaProcesos[self.procesoActivo].error != ""):
+            self.listaProcesos[self.procesoActivo].estado = ProcesoEstado.FINALIZADO
+
+        elif(len(self.listaProcesos[self.procesoActivo].ejecutable.listaInstrucciones) == self.listaProcesos[self.procesoActivo].contexto.ip):
             self.listaProcesos[self.procesoActivo].estado = ProcesoEstado.FINALIZADO
             
         elif(self.listaProcesos[self.procesoActivo].estado == ProcesoEstado.EJECUTANDO):

@@ -22,6 +22,8 @@ class Procesador:
             procesoCorrectamente = True
             while (self.ip < len(self.proceso.ejecutable.listaInstrucciones) and procesoCorrectamente):
                 instruccion = self.proceso.ejecutable.listaInstrucciones[self.ip]
+                #Se muestra con el visualizador
+                self.visualizador.mostrar(self.proceso.ejecutable, self)
                 procesoCorrectamente = instruccion.procesar(self)
 
                 if(procesoCorrectamente):
@@ -78,6 +80,9 @@ class Procesador:
         self.dx = contexto.dx
         self.ip = contexto.ip
         self.flag = contexto.flag
+
+    def setearVisualizador(self, visualizador):
+        self.visualizador = visualizador
 
     def obtenerContexto(self):
         contexto = Contexto()
