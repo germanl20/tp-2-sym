@@ -72,6 +72,16 @@ class Visualizador:
             self.pantalla.addstr(3, 25, "dx: " + str(procesador.dx))
             self.pantalla.addstr(4, 25, "ip: " + str(procesador.ip))
             self.pantalla.addstr(5, 25, "flag: " + str(procesador.flag))
+
+
+            #Mostramos la memoria de video del proceso
+            self.pantalla.addstr(0, 40, "--Memoria de Video--")
+            for fila in range(len(procesador.proceso.memoriaVideo)):
+                filaImprimir = fila + 1
+                for columna in range(len(procesador.proceso.memoriaVideo[fila])):
+                    columnaImprimir = columna + 40
+                    self.pantalla.addstr(filaImprimir, columnaImprimir, str(procesador.proceso.memoriaVideo[fila][columna]))
+
             self.pantalla.refresh()
 
             time.sleep(0.5)
