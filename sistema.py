@@ -120,6 +120,6 @@ class Sistema:
             numero = parametros[0]
             fila = parametros[1]
             columna = parametros[2]
-            self.listaProcesos[self.procesoActivo].memoriaVideo[fila, columna] = numero
+            self.listaProcesos[self.procesoActivo].memoriaVideo[fila][columna] = numero
 
 main()

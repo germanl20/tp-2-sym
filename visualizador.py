@@ -80,7 +80,11 @@ class Visualizador:
                 filaImprimir = fila + 1
                 for columna in range(len(procesador.proceso.memoriaVideo[fila])):
                     columnaImprimir = columna + 40
-                    self.pantalla.addstr(filaImprimir, columnaImprimir, str(procesador.proceso.memoriaVideo[fila][columna]))
+                    aImprimir = str(procesador.proceso.memoriaVideo[fila][columna])
+                    yaImpreso = self.pantalla.inch(filaImprimir, columnaImprimir)
+                    
+                    if(yaImpreso == 32 or aImprimir != "-"):
+                        self.pantalla.addstr(filaImprimir, columnaImprimir, aImprimir)
 
             self.pantalla.refresh()
 

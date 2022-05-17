@@ -1,10 +1,4 @@
 Entry_point:
-Neg 2
-Pop dx
-Mov ax, dx
-Mov bx, 0
-Mov cx, 1
-Int 1
 Mov ax, 8
 Mov bx, 0
 Mov cx, 0
