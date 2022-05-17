@@ -9,7 +9,7 @@ class Int(Instruccion):
         procesoCorrectamente = True
         sistemaOp = procesador.sistema
 
-        if(self.nroServicio == 1):
+        if(self.nroServicio == "1"):
             parametros = [procesador.ax, procesador.bx, procesador.cx]
             sistemaOp.syscallHandler(self.nroServicio, parametros)
         else:

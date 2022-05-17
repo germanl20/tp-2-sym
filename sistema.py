@@ -64,10 +64,6 @@ class Sistema:
     def cambiarProceso(self):
         contexto = self.procesador.obtenerContexto()
         self.listaProcesos[self.procesoActivo].setearContexto(contexto)
-        # self.listaProcesos[self.procesoActivo].pila = self.procesador.proceso.pila
-        # self.listaProcesos[self.procesoActivo].error = self.procesador.proceso.error
-        # self.listaProcesos[self.procesoActivo].estado = self.procesador.proceso.estado
-        # self.listaProcesos[self.procesoActivo].memoriaVideo = self.procesador.proceso.memoriaVideo
 
         #Si hubo error, finalizo el proceso
         if(self.listaProcesos[self.procesoActivo].error != ""):
@@ -120,7 +116,7 @@ class Sistema:
 
     def syscallHandler(self, nroServicio, parametros):
         #Imprimir por pantalla
-        if(nroServicio == 1):
+        if(nroServicio == "1"):
             numero = parametros[0]
             fila = parametros[1]
             columna = parametros[2]

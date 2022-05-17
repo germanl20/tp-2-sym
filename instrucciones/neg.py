@@ -12,7 +12,7 @@ class Neg(Instruccion):
         if(self.param1 in ["ax", "bx", "cx", "dx"]):
             numero = procesador.obtenerRegistro(self.param1)
         
-        numero = numero * -1
+        numero = int(numero) * -1
         procesador.proceso.pila.insert(0, numero)
 
         return procesoCorrectamente

@@ -33,6 +33,7 @@ class Procesador:
                     self.clockHandler()
             
             #Si termino el ejecutable
+            self.visualizador.mostrar(self.proceso.ejecutable, self)
             self.sistema.cambiarProceso()
 
 

@@ -7,9 +7,11 @@ from instrucciones.cmp import Cmp
 from instrucciones.dec import Dec
 from instrucciones.etiqueta import Etiqueta
 from instrucciones.inc import Inc
+from instrucciones.int import Int
 from instrucciones.jmp import Jmp
 from instrucciones.jnz import Jnz
 from instrucciones.mov import Mov
+from instrucciones.neg import Neg
 from instrucciones.pop import Pop
 from instrucciones.push import Push
 from instrucciones.ret import Ret
@@ -116,7 +118,7 @@ class Ensamblador:
             self.ejecutable.listaInstruccionesCodFuente.append(linea)
         
         else:
-            match = re.search('^\s*(mov|add|cmp|inc|dec|jmp|jnz|call|push|pop)\s+(.*)', linea)
+            match = re.search('^\s*(mov|add|cmp|inc|dec|jmp|jnz|call|push|pop|int|neg)\s+(.*)', linea)
             
             if (match):
                 instruccion = match.group(1)
@@ -162,17 +164,33 @@ class Ensamblador:
                     else:
                         self.listaErrores[nombreArchivo][numeroDeLinea] = "Error en la linea " + str(numeroDeLinea) + ": Parametro no valido - Debe ser una sola palabra que represente el nombre de una etiqueta"
             
-                elif(instruccion == 'push'):
+                elif(instruccion == 'push' or instruccion == 'neg'):
                     #Obtengo los parametros
                     match = re.search('^(ax|bx|cx|dx|\d+)\s*$', parametros)
                     if(match):
-                        instruccionNueva = Push(match.group(1))
+                        if(instruccion == 'push'):
+                            instruccionNueva = Push(match.group(1))
+                        elif(instruccion == 'neg'):
+                            instruccionNueva = Neg(match.group(1))
                         
                         self.ejecutable.listaInstrucciones.append(instruccionNueva)
                         self.ejecutable.listaInstruccionesCodFuente.append(linea)
                     
                     else:
                         self.listaErrores[nombreArchivo][numeroDeLinea] = "Error en la linea " + str(numeroDeLinea) + ": Parametro no valido - Debe ser un registro o numero."
+
+                elif(instruccion == 'int'):
+                    #Obtengo el parametro - Debe ser un numero
+                    match = re.search('^(\d+)\s*$', parametros)
+                    if(match):
+                        if(instruccion == 'int'):
+                            instruccionNueva = Int(match.group(1))
+                        
+                        self.ejecutable.listaInstrucciones.append(instruccionNueva)
+                        self.ejecutable.listaInstruccionesCodFuente.append(linea)
+                    
+                    else:
+                        self.listaErrores[nombreArchivo][numeroDeLinea] = "Error en la linea " + str(numeroDeLinea) + ": Parametro no valido - Debe ser un numero."
 
                 # Si es Inc, Dec o Pop
                 else:
