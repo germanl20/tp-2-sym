@@ -23,7 +23,7 @@ class Proceso:
         for i in range(10):
             self.memoriaVideo.append([])
             for j in range(10):
-                self.memoriaVideo[i].append('-')
+                self.memoriaVideo[i].append('*')
 
 
 class ProcesoEstado(Enum):

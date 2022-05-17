@@ -83,7 +83,7 @@ class Visualizador:
                     aImprimir = str(procesador.proceso.memoriaVideo[fila][columna])
                     yaImpreso = self.pantalla.inch(filaImprimir, columnaImprimir)
                     
-                    if(yaImpreso == 32 or aImprimir != "-"):
+                    if(yaImpreso == 32 or aImprimir != "*"):
                         self.pantalla.addstr(filaImprimir, columnaImprimir, aImprimir)
 
             self.pantalla.refresh()
