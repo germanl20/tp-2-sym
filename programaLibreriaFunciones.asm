@@ -24,17 +24,45 @@ CicloMultiplicar:
     Mov ax, dx
     Ret
 
-Entry_point:
-    Push 2
-    Push 14
-    Call Restar
-    Mov bx, 0
+Dividir:
+    Pop cx
+    Pop ax
+    Pop bx
+    Push cx
     Mov cx, 0
-    Int 1
-
-    Push 3
-    Push 2
+    Mov dx, 0
+CicloDividir:
+    Inc cx
+    Add dx, bx
+    Cmp dx, ax
+    Jnz CicloDividir
+    Cmp ax, dx
+    Jnz CalcularResultados
+    Mov ax, cx
+    Mov bx, 0
+    Ret
+CalcularResultados:
+    Dec cx
+    Push ax
+    Push bx
+    Push cx
+    Push bx
+    Push cx
     Call Multiplicar
-    Mov bx, 1
-    Mov cx, 1
-    Int 1
+    Mov dx, ax
+    Pop cx
+    Pop bx
+    Pop ax
+    Push cx
+    Push dx
+    Push ax
+    Call Restar
+    Mov bx, ax
+    Pop ax
+    Ret
+
+Entry_point:
+    Push 3
+    Push 8
+    Call Dividir
+Fin:
