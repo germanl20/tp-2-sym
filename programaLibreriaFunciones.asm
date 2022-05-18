@@ -60,9 +60,3 @@ CalcularResultados:
     Mov bx, ax
     Pop ax
     Ret
-
-Entry_point:
-    Push 3
-    Push 8
-    Call Dividir
-Fin:
