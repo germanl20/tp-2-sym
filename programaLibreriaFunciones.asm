@@ -60,3 +60,29 @@ CalcularResultados:
     Mov bx, ax
     Pop ax
     Ret
+
+RaizCuadrada:
+    Pop cx
+    Pop ax
+    Push cx
+    Mov bx, 0
+CicloRaizCuadrada:
+    Inc bx
+    Push ax
+    Push bx
+    Push bx
+    Push bx
+    Call Multiplicar
+    Mov dx, ax
+    Pop bx
+    Pop ax
+    Cmp dx, ax
+    Jnz CicloRaizCuadrada
+    Cmp ax, dx
+    Jnz CalcularResultadosRaizCuadrada
+    Mov ax, bx
+    Ret
+CalcularResultadosRaizCuadrada:
+    Dec bx
+    Mov ax, bx
+    Ret
