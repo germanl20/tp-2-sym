@@ -25,10 +25,47 @@ CalcularRaices:
     Push ax
     Call Restar
     Mov dx, ax
-    
+    Push dx
+    Call RaizCuadrada
+    Mov dx, ax
     Pop cx
     Pop bx
     Pop ax
+    Neg bx
+    Pop bx
+    Push bx
+    Add bx, dx
+    Add ax, ax
+    Push ax
+    Push dx
+    Push ax
+    Push bx
+    Call Dividir
+    Mov cx, ax
+    Pop dx
+    Pop ax
+    Pop bx
+    Neg dx
+    Pop dx
+    Add bx, dx
+    Push cx
+
+    Cmp bx, 0
+    Jnz UltimaDivisionNegativa
+    Push ax
+    Push bx
+    Call Dividir
+    Pop bx
+    Ret
+UltimaDivisionNegativa:
+    Neg bx
+    Pop bx
+    Push ax
+    Push bx
+    Call Dividir
+    Neg ax
+    Pop ax
+    Pop bx
     Ret
 
 Entry_point:
