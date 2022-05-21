@@ -18,7 +18,7 @@ class Visualizador:
 
             self.pantalla.refresh()
 
-            # time.sleep(0.5)
+            time.sleep(0.5)
         except:
             pass
 

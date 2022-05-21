@@ -49,7 +49,6 @@ CalcularRaices:
     Pop dx
     Add bx, dx
     Push cx
-
     Cmp bx, 0
     Jnz UltimaDivisionNegativa
     Push ax
