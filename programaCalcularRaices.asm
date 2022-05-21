@@ -72,4 +72,11 @@ Entry_point:
     Mov bx, 10
     Mov cx, 0
     Call CalcularRaices
-Fin:
+    Push bx
+    Mov bx, 0
+    Mov cx, 0
+    Int 1
+    Pop ax
+    Mov bx, 1
+    Mov cx, 0
+    Int 1
