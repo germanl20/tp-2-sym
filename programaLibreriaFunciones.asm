@@ -14,12 +14,16 @@ Multiplicar:
     Pop ax
     Pop bx
     Push cx
-    Mov cx, 1
+    Mov cx, 0
     Mov dx, 0
+    Cmp cx, bx
+    Jnz CicloMultiplicar
+    Mov ax, 0
+    Ret
 CicloMultiplicar:
+    Inc cx
     Add dx, ax
     Cmp cx, bx
-    Inc cx
     Jnz CicloMultiplicar
     Mov ax, dx
     Ret

@@ -127,7 +127,7 @@ class Ensamblador:
                 #Si es una instruccion que lleve dos parametros
                 if(instruccion == 'mov' or instruccion == 'add' or instruccion == 'cmp'):
                     #Obtengo los parametros
-                    match = re.search('^(ax|bx|cx|dx)\s*,\s*(ax|bx|cx|dx|\d+)\s*$', parametros)
+                    match = re.search('^(ax|bx|cx|dx)\s*,\s*(ax|bx|cx|dx|\d+|-\d+)\s*$', parametros)
                     if (match):
                         if(instruccion == 'mov'):
                             instruccionNueva = Mov(match.group(1), match.group(2))
@@ -166,7 +166,7 @@ class Ensamblador:
             
                 elif(instruccion == 'push' or instruccion == 'neg'):
                     #Obtengo los parametros
-                    match = re.search('^(ax|bx|cx|dx|\d+)\s*$', parametros)
+                    match = re.search('^(ax|bx|cx|dx|\d+|-\d+)\s*$', parametros)
                     if(match):
                         if(instruccion == 'push'):
                             instruccionNueva = Push(match.group(1))
